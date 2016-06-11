@@ -31,8 +31,8 @@ CREATE TABLE `Location`
     `Date` DATE NOT NULL,
     `TripID` CHAR(36) NOT NULL,
     PRIMARY KEY (`ID`),
-    INDEX `Location_fi_557870` (`TripID`),
-    CONSTRAINT `Location_fk_557870`
+    INDEX `fi_Location_Trip` (`TripID`),
+    CONSTRAINT `FK_Location_Trip`
         FOREIGN KEY (`TripID`)
         REFERENCES `Trip` (`ID`)
 ) ENGINE=InnoDB;

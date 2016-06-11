@@ -14,7 +14,7 @@
     <column name="Date" type="date" required="true" />
     <column name="TripID" type="char" required="true" size="36" />
 
-    <foreign-key foreignTable="Trip" phpName="Trip">
+    <foreign-key foreignTable="Trip" phpName="Trip" name="FK_Location_Trip">
         <reference local="TripID" foreign="ID" />
     </foreign-key>
   </table>
