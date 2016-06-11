@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS `traveltracker`; 
+
+CREATE TABLE IF NOT EXISTS `Trip`
+(
+	`ID` CHAR(36) UNIQUE PRIMARY KEY NOT NULL, 
+	`Name` VARCHAR(36) NOT NULL	
+);
+
+CREATE TABLE IF NOT EXISTS `Location` 
+(
+	`ID` CHAR(36) UNIQUE PRIMARY KEY NOT NULL, 
+    `Lat` FLOAT(10,6) NOT NULL, 
+    `Long` FLOAT(10,6) NOT NULL, 
+    `Name` VARCHAR(100) NULL, 
+    `Date` DATETIME NOT NULL, 
+    `TripID` CHAR(36) NOT NULL,
+    
+    CONSTRAINT FOREIGN KEY `FK_Location_Trip`(`TripID`) REFERENCES `Trip`(`ID`)
+); 
+
+
+CREATE INDEX `IX_Location_Date` ON `Location` (`Date` DESC);  
