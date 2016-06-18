@@ -1,5 +1,6 @@
 {
     "require": {
-        "propel/propel": "~2.0@dev"
+        "propel/propel": "~2.0@dev",
+        "phpunit/phpunit": "4.8.*"
     }
 }
