@@ -1,9 +1,11 @@
 <?php
 
-use Base\Location as BaseLocation;
+namespace TravelTracker\Dataaccess\Entity;
+
+use TravelTracker\Base\Trip as BaseTrip;
 
 /**
- * Skeleton subclass for representing a row from the 'Location' table.
+ * Skeleton subclass for representing a row from the 'Trip' table.
  *
  *
  *
@@ -12,7 +14,7 @@ use Base\Location as BaseLocation;
  * long as it does not already exist in the output directory.
  *
  */
-class Location extends BaseLocation
+class Trip extends BaseTrip
 {
 
 }

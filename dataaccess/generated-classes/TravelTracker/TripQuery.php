@@ -1,9 +1,11 @@
 <?php
 
-use Base\Trip as BaseTrip;
+namespace TravelTracker\Dataaccess\Entity;
+
+use TravelTracker\Base\TripQuery as BaseTripQuery;
 
 /**
- * Skeleton subclass for representing a row from the 'Trip' table.
+ * Skeleton subclass for performing query and update operations on the 'Trip' table.
  *
  *
  *
@@ -12,7 +14,7 @@ use Base\Trip as BaseTrip;
  * long as it does not already exist in the output directory.
  *
  */
-class Trip extends BaseTrip
+class TripQuery extends BaseTripQuery
 {
 
 }

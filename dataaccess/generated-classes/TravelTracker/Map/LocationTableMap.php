@@ -1,9 +1,7 @@
 <?php
 
-namespace Map;
+namespace TravelTracker\Map;
 
-use \Trip;
-use \TripQuery;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
@@ -13,10 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
+use TravelTracker\Location;
+use TravelTracker\LocationQuery;
 
 
 /**
- * This class defines the structure of the 'Trip' table.
+ * This class defines the structure of the 'Location' table.
  *
  *
  *
@@ -26,7 +26,7 @@ use Propel\Runtime\Map\TableMapTrait;
  * (i.e. if it's a text column type).
  *
  */
-class TripTableMap extends TableMap
+class LocationTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
@@ -34,7 +34,7 @@ class TripTableMap extends TableMap
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = '.Map.TripTableMap';
+    const CLASS_NAME = 'TravelTracker.Map.LocationTableMap';
 
     /**
      * The default database name for this class
@@ -44,22 +44,22 @@ class TripTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'Trip';
+    const TABLE_NAME = 'Location';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\Trip';
+    const OM_CLASS = '\\TravelTracker\\Location';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'Trip';
+    const CLASS_DEFAULT = 'TravelTracker.Location';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 6;
 
     /**
      * The number of lazy-loaded columns
@@ -69,17 +69,37 @@ class TripTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /**
      * the column name for the ID field
      */
-    const COL_ID = 'Trip.ID';
+    const COL_ID = 'Location.ID';
+
+    /**
+     * the column name for the Lat field
+     */
+    const COL_LAT = 'Location.Lat';
+
+    /**
+     * the column name for the Long field
+     */
+    const COL_LONG = 'Location.Long';
 
     /**
      * the column name for the Name field
      */
-    const COL_NAME = 'Trip.Name';
+    const COL_NAME = 'Location.Name';
+
+    /**
+     * the column name for the Date field
+     */
+    const COL_DATE = 'Location.Date';
+
+    /**
+     * the column name for the TripID field
+     */
+    const COL_TRIPID = 'Location.TripID';
 
     /**
      * The default string format for model objects of the related table
@@ -93,11 +113,11 @@ class TripTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Name', ),
-        self::TYPE_CAMELNAME     => array('id', 'name', ),
-        self::TYPE_COLNAME       => array(TripTableMap::COL_ID, TripTableMap::COL_NAME, ),
-        self::TYPE_FIELDNAME     => array('ID', 'Name', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Lat', 'Long', 'Name', 'Date', 'Tripid', ),
+        self::TYPE_CAMELNAME     => array('id', 'lat', 'long', 'name', 'date', 'tripid', ),
+        self::TYPE_COLNAME       => array(LocationTableMap::COL_ID, LocationTableMap::COL_LAT, LocationTableMap::COL_LONG, LocationTableMap::COL_NAME, LocationTableMap::COL_DATE, LocationTableMap::COL_TRIPID, ),
+        self::TYPE_FIELDNAME     => array('ID', 'Lat', 'Long', 'Name', 'Date', 'TripID', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -107,11 +127,11 @@ class TripTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Name' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'name' => 1, ),
-        self::TYPE_COLNAME       => array(TripTableMap::COL_ID => 0, TripTableMap::COL_NAME => 1, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'Name' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Lat' => 1, 'Long' => 2, 'Name' => 3, 'Date' => 4, 'Tripid' => 5, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'lat' => 1, 'long' => 2, 'name' => 3, 'date' => 4, 'tripid' => 5, ),
+        self::TYPE_COLNAME       => array(LocationTableMap::COL_ID => 0, LocationTableMap::COL_LAT => 1, LocationTableMap::COL_LONG => 2, LocationTableMap::COL_NAME => 3, LocationTableMap::COL_DATE => 4, LocationTableMap::COL_TRIPID => 5, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'Lat' => 1, 'Long' => 2, 'Name' => 3, 'Date' => 4, 'TripID' => 5, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -124,15 +144,19 @@ class TripTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('Trip');
-        $this->setPhpName('Trip');
+        $this->setName('Location');
+        $this->setPhpName('Location');
         $this->setIdentifierQuoting(false);
-        $this->setClassName('\\Trip');
-        $this->setPackage('');
+        $this->setClassName('\\TravelTracker\\Location');
+        $this->setPackage('TravelTracker');
         $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'CHAR', true, 36, null);
-        $this->addColumn('Name', 'Name', 'VARCHAR', true, 36, null);
+        $this->addColumn('Lat', 'Lat', 'FLOAT', true, null, null);
+        $this->addColumn('Long', 'Long', 'FLOAT', true, null, null);
+        $this->addColumn('Name', 'Name', 'VARCHAR', false, 255, null);
+        $this->addColumn('Date', 'Date', 'DATE', true, null, null);
+        $this->addForeignKey('TripID', 'Tripid', 'CHAR', 'Trip', 'ID', true, 36, null);
     } // initialize()
 
     /**
@@ -140,13 +164,13 @@ class TripTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Location', '\\Location', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Trip', '\\TravelTracker\\Trip', RelationMap::MANY_TO_ONE, array (
   0 =>
   array (
     0 => ':TripID',
     1 => ':ID',
   ),
-), null, null, 'Locations', false);
+), null, null, null, false);
     } // buildRelations()
 
     /**
@@ -206,7 +230,7 @@ class TripTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? TripTableMap::CLASS_DEFAULT : TripTableMap::OM_CLASS;
+        return $withPrefix ? LocationTableMap::CLASS_DEFAULT : LocationTableMap::OM_CLASS;
     }
 
     /**
@@ -220,22 +244,22 @@ class TripTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *                         rethrown wrapped into a PropelException.
-     * @return array           (Trip object, last column rank)
+     * @return array           (Location object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = TripTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = TripTableMap::getInstanceFromPool($key))) {
+        $key = LocationTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = LocationTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + TripTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + LocationTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = TripTableMap::OM_CLASS;
-            /** @var Trip $obj */
+            $cls = LocationTableMap::OM_CLASS;
+            /** @var Location $obj */
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            TripTableMap::addInstanceToPool($obj, $key);
+            LocationTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -258,18 +282,18 @@ class TripTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = TripTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = TripTableMap::getInstanceFromPool($key))) {
+            $key = LocationTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = LocationTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
                 $results[] = $obj;
             } else {
-                /** @var Trip $obj */
+                /** @var Location $obj */
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                TripTableMap::addInstanceToPool($obj, $key);
+                LocationTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -290,11 +314,19 @@ class TripTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(TripTableMap::COL_ID);
-            $criteria->addSelectColumn(TripTableMap::COL_NAME);
+            $criteria->addSelectColumn(LocationTableMap::COL_ID);
+            $criteria->addSelectColumn(LocationTableMap::COL_LAT);
+            $criteria->addSelectColumn(LocationTableMap::COL_LONG);
+            $criteria->addSelectColumn(LocationTableMap::COL_NAME);
+            $criteria->addSelectColumn(LocationTableMap::COL_DATE);
+            $criteria->addSelectColumn(LocationTableMap::COL_TRIPID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
+            $criteria->addSelectColumn($alias . '.Lat');
+            $criteria->addSelectColumn($alias . '.Long');
             $criteria->addSelectColumn($alias . '.Name');
+            $criteria->addSelectColumn($alias . '.Date');
+            $criteria->addSelectColumn($alias . '.TripID');
         }
     }
 
@@ -307,7 +339,7 @@ class TripTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(TripTableMap::DATABASE_NAME)->getTable(TripTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(LocationTableMap::DATABASE_NAME)->getTable(LocationTableMap::TABLE_NAME);
     }
 
     /**
@@ -315,16 +347,16 @@ class TripTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-        $dbMap = Propel::getServiceContainer()->getDatabaseMap(TripTableMap::DATABASE_NAME);
-        if (!$dbMap->hasTable(TripTableMap::TABLE_NAME)) {
-            $dbMap->addTableObject(new TripTableMap());
+        $dbMap = Propel::getServiceContainer()->getDatabaseMap(LocationTableMap::DATABASE_NAME);
+        if (!$dbMap->hasTable(LocationTableMap::TABLE_NAME)) {
+            $dbMap->addTableObject(new LocationTableMap());
         }
     }
 
     /**
-     * Performs a DELETE on the database, given a Trip or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a Location or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or Trip object or primary key or array of primary keys
+     * @param mixed               $values Criteria or Location object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param  ConnectionInterface $con the connection to use
      * @return int             The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -335,27 +367,27 @@ class TripTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TripTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(LocationTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \Trip) { // it's a model object
+        } elseif ($values instanceof \TravelTracker\Location) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(TripTableMap::DATABASE_NAME);
-            $criteria->add(TripTableMap::COL_ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(LocationTableMap::DATABASE_NAME);
+            $criteria->add(LocationTableMap::COL_ID, (array) $values, Criteria::IN);
         }
 
-        $query = TripQuery::create()->mergeWith($criteria);
+        $query = LocationQuery::create()->mergeWith($criteria);
 
         if ($values instanceof Criteria) {
-            TripTableMap::clearInstancePool();
+            LocationTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
             foreach ((array) $values as $singleval) {
-                TripTableMap::removeInstanceFromPool($singleval);
+                LocationTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -363,20 +395,20 @@ class TripTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the Trip table.
+     * Deletes all rows from the Location table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return TripQuery::create()->doDeleteAll($con);
+        return LocationQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a Trip or Criteria object.
+     * Performs an INSERT on the database, given a Location or Criteria object.
      *
-     * @param mixed               $criteria Criteria or Trip object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or Location object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -385,18 +417,18 @@ class TripTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(TripTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(LocationTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from Trip object
+            $criteria = $criteria->buildCriteria(); // build Criteria from Location object
         }
 
 
         // Set the correct dbName
-        $query = TripQuery::create()->mergeWith($criteria);
+        $query = LocationQuery::create()->mergeWith($criteria);
 
         // use transaction because $criteria could contain info
         // for more than one table (I guess, conceivably)
@@ -405,7 +437,7 @@ class TripTableMap extends TableMap
         });
     }
 
-} // TripTableMap
+} // LocationTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-TripTableMap::buildTableMap();
+LocationTableMap::buildTableMap();

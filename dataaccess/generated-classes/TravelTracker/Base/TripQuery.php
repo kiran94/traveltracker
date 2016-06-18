@@ -1,12 +1,9 @@
 <?php
 
-namespace Base;
+namespace TravelTracker\Base;
 
-use \Trip as ChildTrip;
-use \TripQuery as ChildTripQuery;
 use \Exception;
 use \PDO;
-use Map\TripTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
@@ -14,6 +11,9 @@ use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
+use TravelTracker\Trip as ChildTrip;
+use TravelTracker\TripQuery as ChildTripQuery;
+use TravelTracker\Map\TripTableMap;
 
 /**
  * Base class that represents a query for the 'Trip' table.
@@ -44,7 +44,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTripQuery rightJoinWithLocation() Adds a RIGHT JOIN clause and with to the query using the Location relation
  * @method     ChildTripQuery innerJoinWithLocation() Adds a INNER JOIN clause and with to the query using the Location relation
  *
- * @method     \LocationQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
+ * @method     \TravelTracker\LocationQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
  * @method     ChildTrip findOne(ConnectionInterface $con = null) Return the first ChildTrip matching the query
  * @method     ChildTrip findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTrip matching the query, or a new ChildTrip object populated from the query conditions when no match is found
@@ -69,13 +69,13 @@ abstract class TripQuery extends ModelCriteria
     protected $entityNotFoundExceptionClass = '\\Propel\\Runtime\\Exception\\EntityNotFoundException';
 
     /**
-     * Initializes internal state of \Base\TripQuery object.
+     * Initializes internal state of \TravelTracker\Base\TripQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'traveltracker', $modelName = '\\Trip', $modelAlias = null)
+    public function __construct($dbName = 'traveltracker', $modelName = '\\TravelTracker\\Trip', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
@@ -302,16 +302,16 @@ abstract class TripQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \Location object
+     * Filter the query by a related \TravelTracker\Location object
      *
-     * @param \Location|ObjectCollection $location the related object to use as filter
+     * @param \TravelTracker\Location|ObjectCollection $location the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildTripQuery The current query, for fluid interface
      */
     public function filterByLocation($location, $comparison = null)
     {
-        if ($location instanceof \Location) {
+        if ($location instanceof \TravelTracker\Location) {
             return $this
                 ->addUsingAlias(TripTableMap::COL_ID, $location->getTripid(), $comparison);
         } elseif ($location instanceof ObjectCollection) {
@@ -320,7 +320,7 @@ abstract class TripQuery extends ModelCriteria
                 ->filterByPrimaryKeys($location->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByLocation() only accepts arguments of type \Location or Collection');
+            throw new PropelException('filterByLocation() only accepts arguments of type \TravelTracker\Location or Collection');
         }
     }
 
@@ -365,13 +365,13 @@ abstract class TripQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \LocationQuery A secondary query class using the current class as primary query
+     * @return \TravelTracker\LocationQuery A secondary query class using the current class as primary query
      */
     public function useLocationQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
             ->joinLocation($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'Location', '\LocationQuery');
+            ->useQuery($relationAlias ? $relationAlias : 'Location', '\TravelTracker\LocationQuery');
     }
 
     /**

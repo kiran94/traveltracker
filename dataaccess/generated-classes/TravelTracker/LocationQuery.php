@@ -1,6 +1,8 @@
 <?php
 
-use Base\LocationQuery as BaseLocationQuery;
+namespace TravelTracker;
+
+use TravelTracker\Base\LocationQuery as BaseLocationQuery;
 
 /**
  * Skeleton subclass for performing query and update operations on the 'Location' table.

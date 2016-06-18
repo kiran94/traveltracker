@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database name="traveltracker" defaultIdMethod="native">
+<database name="traveltracker" defaultIdMethod="native" namespace="TravelTracker">
   
   <table name="Trip" phpName="Trip">
     <column name="ID" type="char" required="true" primaryKey="true" size="36" />
@@ -18,5 +18,4 @@
         <reference local="TripID" foreign="ID" />
     </foreign-key>
   </table>
-
 </database>
