@@ -13,17 +13,23 @@ class Repository implements \contracts\IRepository
     */
     private $connection;
 
+    /* Logger Service */
+    private $logger; 
+
     /*
         Initialises a new instance of the Repository class
     */
-    public function __construct($connection)
+    public function __construct($connection, $logger)
     {
-        $this->connection = $connection;
+        $this->connection = $connection->getConnection();
+        $this->logger = $logger; 
     }
 
     // @inheritdoc
     public function ExecuteQuery($query)
     {
+        $this->logger->trace(sprintf("Executing Query: %s", $query)); 
+
         $result = mysqli_query($this->connection, $query);
         $set = [];
         while ($row = mysqli_fetch_array($result))
@@ -37,6 +43,7 @@ class Repository implements \contracts\IRepository
     // @inheritdoc
     public function ExecuteCommand($command)
     {
+        $this->logger->trace(sprintf("Executing Command: %s", $command)); 
         return mysqli_query($this->connection, $query); 
     }
 }
