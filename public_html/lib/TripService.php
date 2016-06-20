@@ -25,6 +25,8 @@ class TripService implements contracts\ITripService
 
     /*
         Initialises a new instance of the TripService class
+        @param Repository access to the database
+        @param logger service
     */
     public function __construct($Repository, $Logger)
     {
@@ -35,6 +37,8 @@ class TripService implements contracts\ITripService
      // @inheritdoc
     public function Create($toCreate)
     {
+        $this->logger->debug(sprintf("Creating Trip %s", $toCreate->ID)); 
+
         $query = "INSERT INTO Trip VALUES(%s, %s, %s);"; 
         $query = sprintf($query, $toCreate->ID, $toCreate->Name, "0"); 
 
@@ -44,21 +48,26 @@ class TripService implements contracts\ITripService
      // @inheritdoc
     public function Get($ID)
     {
+        $this->logger->debug(sprintf("Retrieving Trip %s", $ID)); 
+
         $query = "SELECT * FROM Trip WHERE ID = '%s' and IsDeleted = '%s';"; 
         $query = sprintf($query, $ID, "0"); 
         $resultArray = $this->repository->ExecuteQuery($query);
-
-        if (count($resultArray) >= 0)
+        
+        if (count($resultArray) > 0)
         {
             return $this->ResultToArray($resultArray)[0]; 
         }
-       
+
+        $this->logger->warn(sprintf("Trip %s not found", $ID));
         return false; 
     }
 
      // @inheritdoc
     public function Update($toUpdate)
     {
+        $this->logger->debug(sprintf("Updating Trip %s", $toUpdate->ID)); 
+
         $query = "UPDATE Trip SET Name ='%s' WHERE ID = '%s'"; 
         $query = sprintf($query, $toUpdate->Name, $toUpdate->ID); 
 
@@ -68,13 +77,15 @@ class TripService implements contracts\ITripService
      // @inheritdoc
     public function Delete($toDelete)
     {
-        /// need soft delete flag
+        $this->logger->debug(sprintf("soft deleting Trip %s", $toDelete->ID)); 
         exit("not implemented");
     }
 
      // @inheritdoc
     public function GetAll()
     {
+        $this->logger->debug("Retrieving all Trips"); 
+
         $query = "SELECT * FROM Trip WHERE IsDeleted = '0';"; 
         $resultArray = $this->repository->ExecuteQuery($query);
         return $this->ResultToArray($resultArray); 
