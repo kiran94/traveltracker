@@ -4,5 +4,6 @@ class Trip
 {
     public $ID; 
     public $Name; 
+    public $IsDeleted; 
 }
 ?>

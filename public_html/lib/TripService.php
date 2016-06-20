@@ -32,34 +32,69 @@ class TripService implements contracts\ITripService
         $this->logger = $Logger;
     }
 
+     // @inheritdoc
     public function Create($toCreate)
     {
-       exit("not implemented");
+        $query = "INSERT INTO Trip VALUES(%s, %s, %s);"; 
+        $query = sprintf($query, $toCreate->ID, $toCreate->Name, "0"); 
+
+        return $this->repository->ExecuteCommand($query); 
     }
 
+     // @inheritdoc
     public function Get($ID)
     {
-       $resultArray = $this->repository->ExecuteQuery("SELECT * FROM Trip");
-       $trips = [];
-       foreach ($resultArray as $row)
-       {
-           $currentTrip = new \entities\Trip();
-           $currentTrip->ID = $row[0];
-           $currentTrip->Name = $row[1];
-           $trips[] = $currentTrip;
-       }
+        $query = "SELECT * FROM Trip WHERE ID = '%s' and IsDeleted = '%s';"; 
+        $query = sprintf($query, $ID, "0"); 
+        $resultArray = $this->repository->ExecuteQuery($query);
 
-       return $trips;
+        if (count($resultArray) >= 0)
+        {
+            return $this->ResultToArray($resultArray)[0]; 
+        }
+       
+        return false; 
     }
 
+     // @inheritdoc
     public function Update($toUpdate)
     {
+        $query = "UPDATE Trip SET Name ='%s' WHERE ID = '%s'"; 
+        $query = sprintf($query, $toUpdate->Name, $toUpdate->ID); 
+
+        return $this->repository->ExecuteCommand($query); 
+    }
+
+     // @inheritdoc
+    public function Delete($toDelete)
+    {
+        /// need soft delete flag
         exit("not implemented");
     }
 
-    public function Delete($toDelete)
+     // @inheritdoc
+    public function GetAll()
     {
-        exit("not implemented");
+        $query = "SELECT * FROM Trip WHERE IsDeleted = '0';"; 
+        $resultArray = $this->repository->ExecuteQuery($query);
+        return $this->ResultToArray($resultArray); 
+    }
+
+    /*
+        Converts a result set to an array of Trip objects
+        @param resultSet resultset to convert into an array of objects
+    */
+    private function ResultToArray($resultSet)
+    {
+        $trips = [];
+        foreach ($resultSet as $row)
+        {
+            $currentTrip = new \entities\Trip();
+            $currentTrip->ID = $row[0];
+            $currentTrip->Name = $row[1];
+            $trips[] = $currentTrip;
+        }
+       return $trips;
     }
 }
 ?>

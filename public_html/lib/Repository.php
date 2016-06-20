@@ -21,6 +21,7 @@ class Repository implements \contracts\IRepository
         $this->connection = $connection;
     }
 
+    // @inheritdoc
     public function ExecuteQuery($query)
     {
         $result = mysqli_query($this->connection, $query);
@@ -31,6 +32,12 @@ class Repository implements \contracts\IRepository
         }
 
         return $set;
+    }
+
+    // @inheritdoc
+    public function ExecuteCommand($command)
+    {
+        return mysqli_query($this->connection, $query); 
     }
 }
 ?>
