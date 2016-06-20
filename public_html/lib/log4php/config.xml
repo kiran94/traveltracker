@@ -7,7 +7,7 @@
     </appender>
     <root>
         <!-- TRACE, DEBUG, INFO, WARN, ERROR, FATAL -->
-        <level value="DEBUG" />
+        <level value="WARN" />
         <appender_ref ref="myAppender" />
     </root>
 </configuration>
