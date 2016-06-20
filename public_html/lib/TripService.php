@@ -3,7 +3,8 @@ namespace services;
 
 require_once 'Repository.php';
 require_once 'contracts/ITripService.php';
-require_once 'entities/Trip.php'; 
+require_once 'entities/Trip.php';
+require_once 'LocationService.php'; 
 
 use dataccess;
 use contracts;
@@ -56,7 +57,7 @@ class TripService implements contracts\ITripService
 
         if (count($resultArray) > 0)
         {
-            return $this->ResultToArray($resultArray)[0]; 
+            return TripService::ResultToArray($resultArray)[0]; 
         }
 
         $this->logger->warn(sprintf("Trip %s not found", $ID));
@@ -91,14 +92,21 @@ class TripService implements contracts\ITripService
 
         $query = "SELECT * FROM `Trip` WHERE `IsDeleted` = '0';"; 
         $resultArray = $this->repository->ExecuteQuery($query);
-        return $this->ResultToArray($resultArray); 
+        return TripService::ResultToArray($resultArray); 
+    }
+
+    // @inheritdoc
+    public function GetTripTotals()
+    {
+        $query = "SELECT t.`ID`, t.`Name`, COUNT(l.`ID`) AS Total FROM `Trip` t INNER JOIN `Location` l ON t.ID = l.TripID GROUP BY t.`ID` ORDER BY t.`Name`;";
+        return $this->repository->ExecuteQuery($query); 
     }
 
     /*
         Converts a result set to an array of Trip objects
         @param resultSet resultset to convert into an array of objects
     */
-    private function ResultToArray($resultSet)
+    public static function ResultToArray($resultSet)
     {
         $trips = [];
         foreach ($resultSet as $row)

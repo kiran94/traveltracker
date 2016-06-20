@@ -34,5 +34,10 @@ interface ITripService
         Gets all Trips in the database
     */
     public function GetAll(); 
+
+    /*
+        Gets all trips grouped by number of locations registered
+    */
+    public function GetTripTotals(); 
 }
 ?>
