@@ -1,11 +1,20 @@
 <?php
-    require_once 'lib/TripService.php';
+    require_once 'lib/ConfigurationService.php'; 
+    require_once 'lib/log4php/LoggerService.php';
+    require_once 'lib/Connection.php';  
     require_once 'lib/Repository.php';
+    require_once 'lib/TripService.php';
+    require_once 'lib/LocationService.php'; 
    
-    $con = mysqli_connect("localhost:8889", "root", "root", "traveltracker");
-    $repo = new dataaccess\Repository($con);
+    $config = new services\ConfigurationService("config.ini");
+    $logger = new services\LoggerService($config); 
+    $connection = new dataaccess\Connection($config, $logger);
+    
+    $repo = new dataaccess\Repository($connection, $logger);
 
-    $trips = new services\TripService($repo, null);
-    $res = $trips->Get("test");
-    echo var_dump($res);
+    $TripService = new services\TripService($repo, $logger); 
+    $array = $TripService->GetTripTotals(); 
+
+    echo var_dump($array); 
+    echo "done"; 
 ?>
