@@ -2,7 +2,7 @@
 namespace services;
 
 require_once 'Repository.php';
-require_once 'ITripService.php';
+require_once 'contracts/ITripService.php';
 require_once 'entities/Trip.php'; 
 
 use dataccess;
@@ -53,7 +53,7 @@ class TripService implements contracts\ITripService
         $query = "SELECT * FROM Trip WHERE ID = '%s' and IsDeleted = '%s';"; 
         $query = sprintf($query, $ID, "0"); 
         $resultArray = $this->repository->ExecuteQuery($query);
-        
+
         if (count($resultArray) > 0)
         {
             return $this->ResultToArray($resultArray)[0]; 

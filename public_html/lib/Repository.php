@@ -1,6 +1,6 @@
 <?php
 namespace dataaccess;
-require_once 'IRepository.php';
+require_once 'contracts/IRepository.php';
 use contracts;
 
 /*

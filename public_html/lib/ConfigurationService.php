@@ -1,7 +1,7 @@
 <?php 
 namespace services; 
 
-require_once 'IConfigurationService.php'; 
+require_once 'contracts/IConfigurationService.php'; 
 
 /*
     Configuration Service for reading config values
