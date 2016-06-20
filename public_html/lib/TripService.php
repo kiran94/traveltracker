@@ -39,7 +39,7 @@ class TripService implements contracts\ITripService
     {
         $this->logger->debug(sprintf("Creating Trip %s", $toCreate->ID)); 
 
-        $query = "INSERT INTO Trip VALUES(%s, %s, %s);"; 
+        $query = "INSERT INTO `Trip` VALUES(%s, %s, %s);"; 
         $query = sprintf($query, $toCreate->ID, $toCreate->Name, "0"); 
 
         return $this->repository->ExecuteCommand($query); 
@@ -50,7 +50,7 @@ class TripService implements contracts\ITripService
     {
         $this->logger->debug(sprintf("Retrieving Trip %s", $ID)); 
 
-        $query = "SELECT * FROM Trip WHERE ID = '%s' and IsDeleted = '%s';"; 
+        $query = "SELECT * FROM `Trip` WHERE `ID` = '%s' and `IsDeleted` = '%s';"; 
         $query = sprintf($query, $ID, "0"); 
         $resultArray = $this->repository->ExecuteQuery($query);
 
@@ -68,7 +68,7 @@ class TripService implements contracts\ITripService
     {
         $this->logger->debug(sprintf("Updating Trip %s", $toUpdate->ID)); 
 
-        $query = "UPDATE Trip SET Name ='%s' WHERE ID = '%s'"; 
+        $query = "UPDATE `Trip` SET `Name` ='%s' WHERE `ID` = '%s'"; 
         $query = sprintf($query, $toUpdate->Name, $toUpdate->ID); 
 
         return $this->repository->ExecuteCommand($query); 
@@ -78,7 +78,10 @@ class TripService implements contracts\ITripService
     public function Delete($toDelete)
     {
         $this->logger->debug(sprintf("soft deleting Trip %s", $toDelete->ID)); 
-        exit("not implemented");
+        $query = "UPDATE `Trip` SET `IsDeleted` = '1' WHERE `ID` = '%s'"; 
+        $query = sprintf($query, $toDelete->ID); 
+
+        return $this->repository->ExecuteCommand($query); 
     }
 
      // @inheritdoc
@@ -86,7 +89,7 @@ class TripService implements contracts\ITripService
     {
         $this->logger->debug("Retrieving all Trips"); 
 
-        $query = "SELECT * FROM Trip WHERE IsDeleted = '0';"; 
+        $query = "SELECT * FROM `Trip` WHERE `IsDeleted` = '0';"; 
         $resultArray = $this->repository->ExecuteQuery($query);
         return $this->ResultToArray($resultArray); 
     }
