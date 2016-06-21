@@ -27,6 +27,12 @@ class LocationService implements \contracts\ILocationService
     // @inheritdoc
     public function Create($toCreate)
     {
+        if ($toCreate == null)
+        {
+            $this->logger->warn("location entity to create is null"); 
+            return false; 
+        }
+
         $this->logger->debug(sprintf("Created Location %s", $toCreate->ID)); 
         $query = "INSERT INTO `Location` VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s');"; 
         $query = sprintf(
@@ -45,8 +51,13 @@ class LocationService implements \contracts\ILocationService
     // @inheritdoc
     public function Get($ID)
     {
-        $this->logger->debug(sprintf("Retrieving Location %s", $ID)); 
+        if ($ID == null)
+        {
+            $this->logger->warn("Location ID is null"); 
+            return false; 
+        }
 
+        $this->logger->debug(sprintf("Retrieving Location %s", $ID)); 
         $query = "SELECT * FROM `Location` WHERE `ID` = '%s'"; 
         $query = sprintf($query, $ID); 
 
@@ -64,8 +75,13 @@ class LocationService implements \contracts\ILocationService
     // @inheritdoc
     public function Update($toUpdate)
     {
-        $this->logger->debug(sprintf("Updating Location %s", $toUpdate->ID)); 
+        if ($toUpdate == null)
+        {
+            $this->logger->warn("location entity to update is null"); 
+            return false; 
+        }
 
+        $this->logger->debug(sprintf("Updating Location %s", $toUpdate->ID)); 
         $query = "UPDATE `Location` SET `Lat` = %s AND `Long` = %s AND `Name` = %s AND `Date` = %s AND `IsDeleted` = %s AND `TripID` = %s WHERE `ID` = %s;"; 
         $query = sprintf($query, $toUpdate->Lat, $toUpdate->Long, $toUpdate->Name, $toUpdate->Date, $toUpdate->IsDeleted, $toUpdate->TripID, $toUpdate->ID); 
 
@@ -75,6 +91,18 @@ class LocationService implements \contracts\ILocationService
     // @inheritdoc
     public function Delete($toDelete)
     {
+        if ($toDelete == null)
+        {
+            $this->logger->warn("location entity to delete is null"); 
+            return false; 
+        }
+
+        if($toDelete->IsDeleted)
+        {
+            $this->logger->debug(sprintf("Location Entity %s is already deleted", $toDelete->ID)); 
+            return false; 
+        }
+
         $this->logger->debug(sprintf("Soft Deleting Location %s", $toDelete->ID)); 
 
         $query = "UPDATE `Location` SET `IsDeleted` = '%s' WHERE `ID` = %s"; 
@@ -86,6 +114,12 @@ class LocationService implements \contracts\ILocationService
     // @inheritdoc
     public function GetLocationsFromTrip($TripID)
     {
+        if($TripID == null)
+        {
+            $this->logger->warn("trip id is null");
+            return false;  
+        }
+
         $this->logger->debug(sprintf("Retrieving all Locations for Trip %s", $TripID)); 
 
         $query = "SELECT * FROM `Location` WHERE `TripID` = '%s' AND `IsDeleted` = '%s'"; 
