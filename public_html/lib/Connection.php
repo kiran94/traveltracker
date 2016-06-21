@@ -12,9 +12,7 @@ class Connection
     /* Logger Service */
     private $logger; 
 
-    /*
-        Stores the mysql connection
-    */
+    /* Stores the mysql connection */
     private $connection = null; 
 
     /*
@@ -28,7 +26,7 @@ class Connection
 
     /*
         Opens a connection from config values, if already exists returns existing
-        return mysqlconnection 
+        @return mysqlconnection 
     */
     public function getConnection()
     {
@@ -48,10 +46,10 @@ class Connection
                 exit("cannot connect to database"); 
             }
 
+            $this->logger->trace("connected to database"); 
             $this->connection = $con;
         }
 
-        $this->logger->debug("connected to database"); 
         return $this->connection; 
     }
 }
