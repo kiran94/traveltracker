@@ -1,5 +1,6 @@
 <?php 
    require_once 'build_dependencies.php'; 
+   require_once 'lib/TripService.php'; 
 ?>
 <!DOCTYPE html> 
 <html lang="en">
@@ -14,9 +15,9 @@
 </head>
 <body>
 
-    <div id='title'>
+    <header id='title'>
     <h1>TravelTracker</h1>
-    </div>
+    </header>
 
     <div id='map'>
     <!-- Google Maps here -->
@@ -26,16 +27,28 @@
     <?php 
         $tripService = new services\TripService($repository, $logger); 
         $totals = $tripService->GetTripTotals(); 
+        $defaultTrip = null; 
 
         foreach ($totals as $currentRow) 
         {
+            // Gets the first trip as the default trip
+            if($defaultTrip == null)
+            {
+                $defaultTrip = $currentRow[0]; 
+                echo sprintf("<div id='currentTrip'>%s</div>", $defaultTrip); 
+            }
+
             echo sprintf("<div class='trip' id='%s'>", $currentRow[0]); 
             echo sprintf("<h2>%s</h2>", $currentRow[1]);  
-            echo sprintf("%s Locations", $currentRow[2]); 
+            echo sprintf("<p>%s Locations</p>", $currentRow[2]); 
             echo "</div>"; 
          }
     ?>
     </div>
+
+    <footer id='footer'>
+       TravelTracker <?php echo date('Y') ?> &copy; 
+    </footer>
     
     <script src='scripts/maps.js'></script>
     <?php 
@@ -44,8 +57,8 @@
         */
 
         require_once 'api_key.php'; 
-        echo '<script src="https://maps.googleapis.com/maps/api/js?key=' . KEY .'&callback=initMap"
-                async defer></script>';
+        echo '<script src="https://maps.googleapis.com/maps/api/js?key=' . KEY .'&callback=initMap"></script>';
     ?>
+   <script src='scripts/jquery/jquery.min.js'></script>
 </body>
 </html> 
