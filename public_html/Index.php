@@ -1,43 +1,38 @@
-<?php
-    require_once 'lib/ConfigurationService.php'; 
-    require_once 'lib/log4php/LoggerService.php';
-    require_once 'lib/Connection.php';  
-    require_once 'lib/Repository.php';
-    require_once 'lib/TripService.php';
-    require_once 'lib/LocationService.php'; 
-   
-    $config = new services\ConfigurationService("config.ini");
-    $logger = new services\LoggerService($config); 
-    $connection = new dataaccess\Connection($config, $logger);
-    
-    $repo = new dataaccess\Repository($connection, $logger);
-
-    $TripService = new services\TripService($repo, $logger); 
-    $array = $TripService->GetTripTotals(); 
-
-    echo var_dump($array); 
-
-    //$currentLocation = $TripService->Get('b6dc24ec-3728-11e6-a680-8c15c1896d85'); 
-    
-    // echo $currentLocation->ID; 
-    // echo "<br/>";
-    // echo $currentLocation->Name; 
-
-
-    // $trips = new services\TripService($repo, $logger);
-    // $res = $trips->Get("58b3ab6e-36c5-11e6-bbd4-f388cc669bd7");
-
-    // if(!$res)
-    // {
-    //     echo "failed to find trip"; 
-    //     exit(); 
-    // }
-
-    // echo $res->ID; 
-    // echo "<br/>";
-     
-    // echo $res->Name;
-    // echo "<br/>"; 
-
-    echo "done"; 
+<?php 
+   require_once 'build_dependencies.php'; 
 ?>
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <title>TravelTracker</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" type="text/css" href="styles/site.css" />
+</head>
+<body>
+
+    <div id='title'>
+    <h1>TravelTracker</h1>
+    </div>
+
+    <div id='trips'>
+    <?php 
+        $tripService = new services\TripService($repository, $logger); 
+        $totals = $tripService->GetTripTotals(); 
+
+        foreach ($totals as $currentRow) 
+        {
+            echo sprintf("<div class='trip' id='%s'>", $currentRow[0]); 
+            echo sprintf("<h2>%s</h2>", $currentRow[1]);  
+            echo sprintf("%s Locations", $currentRow[2]); 
+            echo "<hr />"; 
+            echo "</div>"; 
+         }
+    ?>
+    </div>
+
+    <div id='map'>
+    <!-- Google Maps here -->
+    </div>
+
+</body>
+</html> 
