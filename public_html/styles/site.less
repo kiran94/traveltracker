@@ -23,6 +23,8 @@ html, body
     #trips 
     {
         display: block; 
+        margin: 0; 
+        padding: 0; 
 
         .trip
         {
@@ -36,12 +38,23 @@ html, body
             {
                 text-align: center; 
                 font-size: @primary-font-size + 10; 
-                small
-                {
-                    font-size: @primary-font-size; 
-                }
             }
-        } 
+
+            p 
+            {
+                 text-align: center; 
+            }
+        }
+
+        .trip:hover
+        {
+            background-color: orange; 
+        }
+
+        #currentTrip
+        {
+            display: none; 
+        }
     }
 
     #map
@@ -49,5 +62,11 @@ html, body
         height: 80%; 
         width: 100%; 
         display: inline-block; 
+        margin: 0; 
+    }
+
+    #footer
+    {
+        text-align: center; 
     }
 }
