@@ -1,9 +1,11 @@
 @primary-color: orange; 
 @primary-text-color: white; 
 @primary-font: "Open Sans"; 
+@primary-font-size: 10px; 
 
-body
+html, body
 {
+    height: 100%;
     margin: 0; 
     padding: 0; 
     
@@ -13,25 +15,39 @@ body
     {
         background-color: @primary-color; 
         color: @primary-text-color; 
-        padding: 10px; 
+        font-size: @primary-font-size; 
+        padding: 5px; 
+        text-align: center; 
     }
 
     #trips 
     {
-        width: 20%; 
-        border: 1px solid black;
+        display: block; 
 
         .trip
         {
-            display: block; 
-            margin: 0 auto; 
-            width: 90%; 
+            display: inline-block; 
+            width: 20%; 
+            border-right: 1px solid black;
+            padding: 0 10px 0;   
             cursor: pointer; 
             
-            h1
+            h2
             {
                 text-align: center; 
+                font-size: @primary-font-size + 10; 
+                small
+                {
+                    font-size: @primary-font-size; 
+                }
             }
         } 
+    }
+
+    #map
+    {
+        height: 80%; 
+        width: 100%; 
+        display: inline-block; 
     }
 }
