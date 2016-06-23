@@ -1,4 +1,11 @@
+/*
+  Google Maps Variable
+*/
 var map; 
+
+/*
+  Array of Markers added to the map
+*/
 var markers = []; 
 
 /*
@@ -100,11 +107,3 @@ function GetTripLocations()
     }
   });
 }
-
-/// FOR TESTING
-$( document ).ready(function()
-{
-  console.log("loaded"); 
-  document.getElementById('currentTrip').innerHTML = "5b90b50c-36c5-11e6-bbd4-f388cc669bd7"; 
-  GetTripLocations(); 
-}); 
