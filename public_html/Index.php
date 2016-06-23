@@ -50,7 +50,8 @@
        TravelTracker <?php echo date('Y') ?> &copy; 
     </footer>
     
-    <script src='scripts/maps.js'></script>
+    <script src='scripts/jquery/jquery.min.js'></script>
+     <script src='scripts/maps.js'></script>
     <?php 
         /*  
             This precaution is needed for developement until a refferer domain is added to the key in production
@@ -59,6 +60,5 @@
         require_once 'api_key.php'; 
         echo '<script src="https://maps.googleapis.com/maps/api/js?key=' . KEY .'&callback=initMap"></script>';
     ?>
-   <script src='scripts/jquery/jquery.min.js'></script>
 </body>
 </html> 
