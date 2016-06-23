@@ -51,7 +51,8 @@
     </footer>
     
     <script src='scripts/jquery/jquery.min.js'></script>
-     <script src='scripts/maps.js'></script>
+    <script src='scripts/maps.js'></script>
+    <script src='scripts/ready.js'></script>
     <?php 
         /*  
             This precaution is needed for developement until a refferer domain is added to the key in production
