@@ -10,7 +10,7 @@ function initMap()
   {
     center: {lat: 51.5331414, lng: -0.4773218},
     scrollwheel: false,
-    zoom: 10
+    zoom: 12
   });
 }
 
@@ -34,8 +34,30 @@ function addMarker(name, location)
 */
 function clearMarkers()
 {
-  setMapOnAll(null); 
   markers = []; 
+
+  if(markers)
+  {
+    for(var i=0; i<markers.length; i++)
+    {
+      markers[i].setMap(null); 
+    }
+    markers.length = 0; 
+  }
+}
+
+/*
+  Generates a polygon
+*/
+function GeneratePolyline(polygonCoords)
+{
+  return new google.maps.Polyline({
+            path: polygonCoords,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
 }
 
 /*
@@ -44,7 +66,6 @@ function clearMarkers()
 function GetTripLocations()
 {
   var tripID = document.getElementById('currentTrip').innerHTML; 
-  //// jquery post to a php endpoint with the trip id and return the locations related
 
   $.ajax(
   {
@@ -54,14 +75,36 @@ function GetTripLocations()
     dataType: 'json',
     success: function(data, status, jq)
     {
-      console.log(data); 
-      console.log(status); 
-      console.log(jq); 
+      clearMarkers();
+      var polygonCoords = []; 
+      var bound = new google.maps.LatLngBounds();
+
+      data.forEach(function(element) 
+      {
+          var currentLoc = {lat: parseFloat(element.Lat), lng: parseFloat(element.Long)};
+
+          addMarker(element.Name, currentLoc); 
+          polygonCoords.push(currentLoc); 
+          bound.extend(new google.maps.LatLng(currentLoc.lat, currentLoc.lng));
+      }, this);
+
+      var polygon = GeneratePolyline(polygonCoords); 
+      polygon.setMap(map); 
+      map.setCenter(bound.getCenter()); 
+      map.fitBounds(bound) 
+     
     },
     error: function(jq, err, thrown)
     {
       console.log("error " + err); 
     }
   });
-
 }
+
+/// FOR TESTING
+$( document ).ready(function()
+{
+  console.log("loaded"); 
+  document.getElementById('currentTrip').innerHTML = "5b90b50c-36c5-11e6-bbd4-f388cc669bd7"; 
+  GetTripLocations(); 
+}); 
