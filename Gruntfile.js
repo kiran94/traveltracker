@@ -17,8 +17,20 @@ module.exports = function(grunt)
                     }
                 }
             },
-            watch: {
-                scripts: {
+            uglify: 
+            {
+                my_target: 
+                {
+                    files: 
+                    {
+                        'public_html/scripts/site.min.js': ['public_html/scripts/maps.js', 'public_html/scripts/ready.js']
+                    }
+                }
+            },
+            watch: 
+            {
+                css: 
+                {
                     files: ['**/*.less'],
                     tasks: ['css'],
                     options: {
@@ -30,7 +42,9 @@ module.exports = function(grunt)
 
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerTask('css', ['less']); 
-    grunt.registerTask('watch_css', ['watch']); 
+    grunt.registerTask('js', ['uglify']);
+    grunt.registerTask('watchcss', ['watch:css']); 
 };
