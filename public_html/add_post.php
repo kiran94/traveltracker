@@ -10,7 +10,16 @@
     $tripID = trim($tripID); 
 
     $lat = $_POST['lat']; 
-    $lng = $_POST['lng']; 
+    $lng = $_POST['lng'];
+
+    if(!isset($lat) || !isset($lng))
+    {
+        $logger->warn("lat or long are not set"); 
+        $error_message = "Please ensure you set both lat and long values"; 
+        require_once 'error.php'; 
+        require_once 'add.php'; 
+        exit(); 
+    } 
 
     $name = $_POST['locationName']; 
     $name = trim($name); 
@@ -34,9 +43,11 @@
     }
     else 
     {
-        $logger->warn(sprintf("new location not added, insert failed")); 
-        $error_message = "Failed to add location"; 
+        $logger->warn("error inserting record"); 
+        $error_message = "Unable to enter record, please try again"; 
         require_once 'error.php'; 
-        require_once 'Index.php'; 
+        require_once 'add.php'; 
+        exit(); 
     }
 ?>
+
