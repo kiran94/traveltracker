@@ -34,8 +34,9 @@
     }
     else 
     {
-       $logger->warn(sprintf("new location not added, insert failed")); 
-       ///redirect somewhere
-       echo "failed to add"; 
+        $logger->warn(sprintf("new location not added, insert failed")); 
+        $error_message = "Failed to add location"; 
+        require_once 'error.php'; 
+        require_once 'Index.php'; 
     }
 ?>

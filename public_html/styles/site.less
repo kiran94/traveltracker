@@ -4,7 +4,7 @@
 @primary-font-size: 10px;
 
 @success-color: #00cc00; 
-
+@error-color: red; 
 
 html, body
 {
@@ -111,6 +111,14 @@ html, body
             width: 100%; 
             text-align: center;
         }
+
+        #error
+        {
+            background-color: fade(@error-color, 70%); 
+            color: white; 
+            width: 100%; 
+            text-align: center;
+        }
     }
 
     //// tablet and desktop
@@ -186,6 +194,18 @@ html, body
         #success
         {
             background-color: fade(@success-color, 70%); 
+            color: white; 
+            width: 20%; 
+            border-radius: 10px; 
+            float: right; 
+            text-align: center; 
+            margin: 4px 5px 0 0; 
+            padding: 5px 5px 5px 0; 
+        }
+
+        #error
+        {
+            background-color: fade(@error-color, 70%); 
             color: white; 
             width: 20%; 
             border-radius: 10px; 
