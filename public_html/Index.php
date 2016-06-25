@@ -10,14 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <title>TravelTracker</title>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Open+Sans'/>
     <link rel="stylesheet" type="text/css" href="styles/site.css" />
 </head>
 <body>
 
-    <header id='title'>
-    <h1>TravelTracker</h1>
-    </header>
+    <?php require_once 'header.php'; ?>
 
     <div id='map'>
     <!-- Google Maps here -->
@@ -46,20 +44,18 @@
     ?>
     </div>
 
-    <footer id='footer'>
-       TravelTracker <?php echo date('Y') ?> &copy; 
-    </footer>
+    //here
+    <?php require_once 'footer.php'; ?>
     
     <script src='scripts/jquery/jquery.min.js'></script>
     <script src='scripts/maps.js'></script>
     <script src='scripts/ready.js'></script>
-    <?php 
-        /*  
-            This precaution is needed for developement until a refferer domain is added to the key in production
-        */
 
+    <?php 
+        /*  This precaution is needed for developement until a refferer domain is added to the key in production */
         require_once 'api_key.php'; 
         echo '<script src="https://maps.googleapis.com/maps/api/js?key=' . KEY .'&callback=initMap"></script>';
     ?>
+    
 </body>
 </html> 
