@@ -3,7 +3,7 @@ $(document).ready(function()
     $('#location').on('click', function(e)
     {
         e.preventDefault();
-        
+
         var loader = $('#loader'); 
         loader.css('display', 'block'); 
        
@@ -26,6 +26,4 @@ $(document).ready(function()
              document.getElementById('lng_label').innerHTML = "Error"; 
         }
     }); 
-
-
 }); 

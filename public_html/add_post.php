@@ -28,8 +28,9 @@
     if($locationService->Create($newLocation) == 1)
     {
         $logger->info(sprintf("new location added %s", $newLocation->ID)); 
-        //// redirect somewhere
-        echo "added"; 
+        $success_message = "Location Successfully added"; 
+        require_once 'success.php'; 
+        require_once 'Index.php'; 
     }
     else 
     {

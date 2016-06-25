@@ -44,7 +44,6 @@
     ?>
     </div>
 
-    //here
     <?php require_once 'footer.php'; ?>
     
     <script src='scripts/jquery/jquery.min.js'></script>
