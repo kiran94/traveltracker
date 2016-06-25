@@ -44,7 +44,7 @@ class Repository implements \contracts\IRepository
     public function ExecuteCommand($command)
     {
         $this->logger->trace(sprintf("Executing Command: %s", $command)); 
-        return mysqli_query($this->connection, $query); 
+        return mysqli_query($this->connection, $command); 
     }
 }
 ?>
