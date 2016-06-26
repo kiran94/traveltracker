@@ -33,8 +33,21 @@ class Connection
         /// read config values and open connection
         if ($this->connection == null)
         {
+            $host = $this->configService->Get("host", "localhost"); 
+            $port = $this->configService->Get("port", "8889"); 
+            $hostStr = "%s"; 
+
+            if ($port != "")
+            {
+                $hostStr = sprintf("%s:%s", $host, $port); 
+            }
+            else
+            {
+                $hostStr = $host; 
+            }
+
             $con = mysqli_connect(
-                $this->configService->Get("host", "localhost") . ":" . $this->configService->Get("port", "8889"),
+                $hostStr,
                 $this->configService->Get("username", "root"), 
                 $this->configService->Get("password", "root"), 
                 $this->configService->Get("database", "traveltracker")
