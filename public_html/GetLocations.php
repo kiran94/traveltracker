@@ -1,10 +1,18 @@
 <?php 
     header('Content-Type: application/json');
-
-    $tripID = $_POST['TripID']; 
     require_once 'build_dependencies.php';
     require_once 'lib/LocationService.php'; 
     require_once 'lib/ValidationService.php'; 
+
+    $tripID = $_POST['TripID']; 
+    if(!isset($tripID))
+    {
+        $logger->warn('trip id was not set in get locations'); 
+        $error_message = "error loading trip"; 
+        require_once 'error.php'; 
+        require_once 'Index.php'; 
+        exit(); 
+    }
 
     $validationService = new services\ValidationService(); 
     if ($validationService->checkUUID($tripID))
