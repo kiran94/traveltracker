@@ -1,7 +1,10 @@
 // AJAX loader
 var loader; 
-var submitted; 
+
+// Latittude DOM element 
 var lat = $("#lat"); 
+
+// Longitude DOM element
 var lng = $('#lng'); 
 
 $(document).ready(function()
