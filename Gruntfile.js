@@ -23,7 +23,7 @@ module.exports = function(grunt)
                 {
                     files: 
                     {
-                        'public_html/scripts/site.min.js': ['public_html/scripts/maps.js', 'public_html/scripts/ready.js']
+                        'public_html/scripts/site.min.js': ['public_html/scripts/maps.js', 'public_html/scripts/ready.js', 'public_html/scripts/addLocation.js']
                     }
                 }
             },
