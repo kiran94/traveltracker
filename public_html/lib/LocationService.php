@@ -42,8 +42,8 @@ class LocationService implements \contracts\ILocationService
             $toCreate->Long, 
             $toCreate->Name, 
             $toCreate->Date, 
-            $toCreate->IsDeleted, 
-            $toCreate->TripID); 
+            $toCreate->TripID,
+            $toCreate->IsDeleted); 
 
         return $this->repository->ExecuteCommand($query);
     }
