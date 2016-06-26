@@ -15,6 +15,7 @@ CREATE TABLE `Trip`
 (
     `ID` CHAR(36) NOT NULL,
     `Name` VARCHAR(36) NOT NULL,
+    `IsDeleted` tinyint(1) NOT NULL DEFAULT '0',
     PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
@@ -30,7 +31,7 @@ CREATE TABLE `Location`
     `Lat` FLOAT NOT NULL,
     `Long` FLOAT NOT NULL,
     `Name` VARCHAR(255),
-    `Date` DATE NOT NULL,
+    `Date` DATETIME NOT NULL,
     `TripID` CHAR(36) NOT NULL,
     PRIMARY KEY (`ID`),
     INDEX `fi_Location_Trip` (`TripID`),
