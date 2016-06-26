@@ -10,7 +10,7 @@
         $logger->warn('trip id was not set in get locations'); 
         $error_message = "error loading trip"; 
         require_once 'error.php'; 
-        require_once 'Index.php'; 
+        require_once 'index.php'; 
         exit(); 
     }
 

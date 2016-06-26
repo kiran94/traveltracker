@@ -39,7 +39,7 @@
         $logger->info(sprintf("new location added %s", $newLocation->ID)); 
         $success_message = "Location Successfully added"; 
         require_once 'success.php'; 
-        require_once 'Index.php'; 
+        require_once 'index.php'; 
     }
     else 
     {
