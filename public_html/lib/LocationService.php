@@ -122,7 +122,7 @@ class LocationService implements \contracts\ILocationService
 
         $this->logger->debug(sprintf("Retrieving all Locations for Trip %s", $TripID)); 
 
-        $query = "SELECT * FROM `Location` WHERE `TripID` = '%s' AND `IsDeleted` = '%s'"; 
+        $query = "SELECT * FROM `Location` WHERE `TripID` = '%s' AND `IsDeleted` = '%s' ORDER BY `DATE` ASC"; 
         $query = sprintf($query, $TripID, "0"); 
 
         $resultArray = $this->repository->ExecuteQuery($query); 

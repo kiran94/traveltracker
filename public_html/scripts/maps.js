@@ -68,7 +68,7 @@ function GeneratePolyline(polygonCoords)
 }
 
 /*
-  Gets Locations realted to the current trip
+  Gets Locations related to the current trip
 */
 function GetTripLocations()
 {
@@ -83,13 +83,14 @@ function GetTripLocations()
     success: function(data, status, jq)
     {
       clearMarkers();
-      var polygonCoords = []; 
+
+      var polygonCoords = [];
       var bound = new google.maps.LatLngBounds();
 
       data.forEach(function(element) 
       {
           var currentLoc = {lat: parseFloat(element.Lat), lng: parseFloat(element.Long)};
-
+          
           addMarker(element.Name, currentLoc); 
           polygonCoords.push(currentLoc); 
           bound.extend(new google.maps.LatLng(currentLoc.lat, currentLoc.lng));
